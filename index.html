@@ -9,7 +9,6 @@
 			overflow: hidden;
 			font-family: monospace;
 		}
-
 		canvas {
 			width: 100%;
 		}
@@ -20,27 +19,21 @@
 		<script type="text/javascript">
 			var data = new Data2Image();
 			window.data = data;
-			var instances = 1000;
+			var instances = 100;
 			data.setTotalInstances(instances);
-			data.addElement('test0','uint', (instance, element) => {
-				return instance*500;
+			data.addElement('integer','number', (instance, element) => {
+				return instance*12;
 			});
-			data.addElement('test1','int', (instance, element) => {
-				return instance*500;
-			});
-			data.addElement('test2','ufloat', (instance, element) => {
+			data.addElement('float','number', (instance, element) => {
 				return instance/instances;
 			});
-			data.addElement('test3','float', (instance, element) => {
-				return instance/instances;
-			});
-			data.addElement('red','rgb', (instance, element) => {
+			data.addElement('red','color', (instance, element) => {
 				return [(instance/instances)*255,0,0];
 			});
-			data.addElement('green','rgb', (instance, element) => {
+			data.addElement('green','color', (instance, element) => {
 				return [0,(instance/instances)*255,0];
 			});
-			data.addElement('blue','rgb', (instance, element) => {
+			data.addElement('blue','color', (instance, element) => {
 				return [0,0,(instance/instances)*255];
 			});
 			var canvas = data.generate();

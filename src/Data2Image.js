@@ -1,4 +1,4 @@
-import {getRangeFor, encodeValue } from './common';
+import {getRangeFor, encodeValue, getDecimals } from './common';
 
 export default class Data2Image {
 	constructor (options) {
@@ -61,5 +61,6 @@ export default class Data2Image {
     }
 }
 
+window.getDecimals = getDecimals;
 window.encodeValue = encodeValue;
 window.Data2Image = Data2Image;
