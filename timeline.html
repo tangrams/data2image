@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Data2Image</title>
+		<script type="text/javascript" src="/build/Data2Image.min.js"></script>
+		<script type="text/javascript" src="https://rawgit.com/zz85/timeliner/master/timeliner.js"></script>
+		<style type="text/css">
+		body {
+			overflow: hidden;
+			font-family: monospace;
+		}
+
+		canvas {
+			width: 100%;
+		}
+
+		#controls {
+			display: inline;
+		}
+
+		.control_element {
+			display: inline;
+		}
+		</style>
+	</head>
+	<body>
+		<ul id="controls">
+			<li class="control_element"> Fps: 1/<input type="number" id="fps" value="24"> </li>
+			<!-- <li class="control_element"> Duration (sec): <input type="number" id="duration" onclick="reloadTimeline()" value="10"> </li> -->
+			<li class="control_element"> <button type="button" onclick="generateTable()">Generate Table</button> </li>
+		</ul>
+		<div id='texture'> </div>
+		<script type="text/javascript">
+			var data;
+			var timeliner = new Timeliner();
+			var duration = 30;
+			var fps = 24;
+			var totalInstances = 0;
+			var step = 1/fps;
+			var frames = [];
+			reloadTimeline();
+
+			function reloadTimeline () {
+				timeliner.load({
+					"version":"1.4.0",
+					"modified":"Mon Dec 08 2014 10:41:11 GMT+0800 (SGT)",
+					"title":"Untitled",
+					"name":"simple",
+					"totalTime": 10,
+					"layers":[],
+					"ui":{
+						"currentTime":0,
+						"totalTime": duration,
+						"scrollTime":0,
+						"timeScale":40
+					}
+				});
+			}
+
+			function getFps() {
+				return document.getElementById("fps").value;
+			}
+
+			function generateTable() {
+				data = new Data2Image();
+				fps = document.getElementById("fps").value;
+				totalInstances = Math.floor(duration*fps)
+				frames = timeliner.getValues(totalInstances);
+				console.log("Ready to generate " + totalInstances + " instances");
+
+				data.setTotalInstances(totalInstances);
+				if (frames) {
+					for (var element in frames[0]) {
+						data.addElement(element, 'int', (instance, element) => {
+							var value = frames[instance][element.name];
+							console.log(value);
+							return value;
+						});
+					}
+				}
+				document.getElementById("texture").appendChild(data.generate());
+			}
+		</script>
+	</body>
+</html>
