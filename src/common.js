@@ -44,7 +44,7 @@ export function encodeValue (value, type) {
 	        Math.floor(uint%255),
 	        Math.floor(uint/255)%255,
 	        Math.floor(uint/(255*255)),
-	        255
+	        pres
 	    ];
 	}
 	else if (type === 'position') {

@@ -3,19 +3,35 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Data2Image</title>
+		<!-- GLSL Canvas -->
+		<script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/build/GlslCanvas.min.js"></script>
 		<script type="text/javascript" src="/build/Data2Image.min.js"></script>
 		<style type="text/css">
 		body {
 			overflow: hidden;
 			font-family: monospace;
+			background-color: black;
 		}
 		canvas {
 			width: 100%;
+		}
+		#shader {
+			width: 500px;
+			height: 500px;
+			margin-left: auto;
+    		margin-right: auto;
+		}
+		#container {
+			width: 100%;
+			text-align: center;
 		}
 		</style>
 	</head>
 	<body>
 		<div id='texture'> </div>
+		<div id='container'>
+			<canvas id='shader' data-fragment-url="barcode.frag" width="500" height="500"></canvas>
+		</div>
 		<script type="text/javascript">
 			var data = new Data2Image();
 			window.data = data;
@@ -36,8 +52,12 @@
 			data.addElement('blue','color', (instance, element) => {
 				return [0,0,(instance/instances)*255];
 			});
-			var canvas = data.generate();
-			document.getElementById("texture").appendChild(canvas);
+			var texture = data.generate();
+			document.getElementById("texture").appendChild(texture);
+
+			var shader = new GlslCanvas(document.getElementById("shader"));
+
+			shader.setTextureUniform('u_tex0',texture.toDataURL());
 		</script>
 	</body>
 </html>
