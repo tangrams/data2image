@@ -4,7 +4,8 @@
 		<meta charset="utf-8">
 		<title>Data2Image</title>
 		<!-- GLSL Canvas -->
-		<script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/build/GlslCanvas.min.js"></script>
+<!-- 		// <script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/build/GlslCanvas.min.js"></script> -->
+		<script type="text/javascript" src="http://localhost:8000/build/GlslCanvas.min.js"></script>
 		<script type="text/javascript" src="https://rawgit.com/tangrams/data2image/gh-pages/build/Data2Image.min.js"></script>
 		<style type="text/css">
 		body {
@@ -57,7 +58,7 @@
 
 			var shader = new GlslCanvas(document.getElementById("shader"));
 
-			shader.setTextureUniform('u_tex0',texture.toDataURL());
+			shader.setTextureUniform('u_tex0',texture, { filtering:'nearest' });
 		</script>
 	</body>
 </html>
