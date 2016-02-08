@@ -10,53 +10,38 @@
 		// <script type="text/javascript" src="build/Data2Image.min.js"></script>
 		<style type="text/css">
 		body {
-			height: 100%;
 			margin: 0;
   			background: #272822;
 		}
-/*		canvas {
-			width: 100%;
-		}*/
-		#shader {
-			width: 500px;
-			height: 500px;
-			margin-left: auto;
-    		margin-right: auto;
-		}
-		#container {
-			width: 100%;
-			text-align: center;
-		}
 		#glsl_editor {
-				height: 100%;
-			}
+			height: 100%;
+		}
 		</style>
 	</head>
 	<body>
-		<!-- <div id='texture'> </div> -->
-		<!-- <div id='container'>
-			<canvas id='shader' data-fragment-url="barcode.frag" width="500" height="500"></canvas>
-		</div> -->
 		<div id="glsl_editor"></div>
 		<script type="text/javascript">
 			var data = new Data2Image();
 			window.data = data;
-			var instances = 100;
+			var instances = 200;
 			data.setTotalInstances(instances);
 			data.addElement('integer','number', (instance, element) => {
-				return instance*100;
+				return instance;
 			});
 			data.addElement('float','number', (instance, element) => {
 				return instance/instances;
 			});
-			data.addElement('red','color', (instance, element) => {
-				return [(instance/instances)*255,0,0];
+			data.addElement('negative_integer','number', (instance, element) => {
+				return -instance;
 			});
-			data.addElement('green','color', (instance, element) => {
-				return [0,(instance/instances)*255,0];
+			data.addElement('integerx5','number', (instance, element) => {
+				return instance*5;
 			});
-			data.addElement('blue','color', (instance, element) => {
-				return [0,0,(instance/instances)*255];
+			data.addElement('integerx10','number', (instance, element) => {
+				return instance*10;
+			});
+			data.addElement('integerx100','number', (instance, element) => {
+				return instance*100;
 			});
 			var texture = data.generate();
 			// document.getElementById("texture").appendChild(texture);
@@ -71,7 +56,7 @@
 			    		menu: true
 			    	});
 			glslEditor.open('shader.frag');
-			glslEditor.sandbox.canvas.setTextureUniform('u_tex0',texture, { filtering:'linear' });
+			glslEditor.sandbox.canvas.setTextureUniform('u_tex0',texture, { filtering:'nearest' });
 			// var shader = new GlslCanvas(document.getElementById("shader"));
 			// shader.setTextureUniform('u_tex0',texture, { filtering:'nearest' });
 		</script>

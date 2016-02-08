@@ -12,7 +12,7 @@ uniform vec2 u_resolution;
 uniform float u_time;
 
 float binChar (vec2 ipos, float n) {
-    float remain = mod(n,33554430.);
+    highp float remain = mod(n,35000.)+1.;
     for (float i = 0.0; i < 15.0; i++) {
         if ( floor(i/3.) == ipos.y && mod(i,3.) == ipos.x ) {
             return step(1.0,mod(remain,2.));
@@ -30,40 +30,61 @@ float char (vec2 st, float n) {
 
     vec2 ipos = floor(st*grid);
     vec2 fpos = fract(st*grid);
+    
+    highp float digit = 0.0;
+    if (n == -1.) { 
+        digit = 448.0; 
+    } else {
+        n = floor(mod(n,10.));
+        if (n == 0. ) { digit = 31599.; } 
+        else if (n == 1. ) { digit = 9362.0; } 
+        else if (n == 2. ) { digit = 31183.0; } 
+        else if (n == 3. ) { digit = 31207.0; } 
+        else if (n == 4. ) { digit = 23524.0; } 
+        else if (n == 5. ) { digit = 29671.0; } 
+        else if (n == 6. ) { digit = 29679.0; } 
+        else if (n == 7. ) { digit = 31012.0; } 
+        else if (n == 8. ) { digit = 31727.0; } 
+        else if (n == 9. ) { digit = 31716.0; }
+    }
+    
 
-    n = floor(mod(n,10.));
-    float digit = 0.0;
-    if (n < 1. ) { digit = 31600.; } 
-    else if (n < 2. ) { digit = 9363.0; } 
-    else if (n < 3. ) { digit = 31184.0; } 
-    else if (n < 4. ) { digit = 31208.0; } 
-    else if (n < 5. ) { digit = 23525.0; } 
-    else if (n < 6. ) { digit = 29672.0; } 
-    else if (n < 7. ) { digit = 29680.0; } 
-    else if (n < 8. ) { digit = 31013.0; } 
-    else if (n < 9. ) { digit = 31728.0; } 
-    else if (n < 10. ) { digit = 31717.0; }
-    float pct = binChar(ipos, digit);
+    highp float pct = binChar(ipos, digit);
 
     vec2 borders = vec2(1.);
-    // borders *= step(0.01,fpos.x) * step(0.01,fpos.y);   // inner
+    borders *= step(0.01,fpos.x) * step(0.01,fpos.y);   // inner
     borders *= step(0.0,st)*step(0.0,1.-st);            // outer
 
     return step(.5,1.0-pct) * borders.x * borders.y;
 }
 
-float writeValue(vec2 st, vec2 size, float value) {
+float writeValue(vec2 st, vec2 size, sampler2D tex, vec2 coord) {
     size = ceil(size);
     
-    vec2 ipos = floor(st*size);
-    vec2 fpos = fract(st*size);
+    highp vec2 ipos = floor(st*size);
+    highp vec2 fpos = fract(st*size);
 
-    value = (value)*pow(10.,ipos.x)*0.000000001+0.0000001;
+    highp vec4 value = texture2D(tex, coord);
+    highp float uint = floor(value.x*255.)+floor(value.y*65025.)+floor(value.z*16581375.);
+    float press = ceil(value.a*255.)-127.;
+    float s = sign(press);
+    press = abs(press);
+    uint = mod(floor(uint*pow(10.,-ceil(size.x-ipos.x-1.))),10.);
+    
+    float rta = 0.0;
     if (ipos.y == 0.0) {
-        return char(fpos,value)*(ipos.x<size.x-3.?1.:.5);
-    } else {
-        return 0.0;
+        if (ipos.x == 0.0) {   
+            if (s < 0.) {
+                rta = char(fpos,-1.);
+            } else {
+                rta = 0.;
+            }
+        } else {
+            rta = char(fpos,floor(uint))*(ipos.x<size.x-press?1.:.5);
+        }
     }
+    
+    return rta;
 }
 
 vec2 getCoord(vec2 res, float col, float row) {
@@ -71,32 +92,31 @@ vec2 getCoord(vec2 res, float col, float row) {
 }
 
 float getNumber(sampler2D tex, vec2 res, float col, float row) {
-    vec4 value = texture2D(tex, getCoord(res, col, row));
-    float unsigned_int = (value.x*255.)+(value.y*65025.)+(value.z*16581375.);
-    float press = value.a*255.-127.;
-    float s = sign(press);
+    vec2 coord = getCoord(res, col, row);
+    highp vec4 value = texture2D(tex, coord);
+    highp float uint = (value.x*255.)+(value.y*65025.)+(value.z*16581375.);
+    float press = ceil(value.a*255.)-127.;
+    float s = mod(sign(press),127.);
     press = pow(10.,-floor(press));
-    return unsigned_int * press * s;
+    return uint * press * s;
 }
 
 void main(){
     vec2 st = gl_FragCoord.st/u_resolution.xy;
     vec2 pixel = 1./u_tex0Resolution;
-    
-    vec2 pos = vec2(floor(u_time),floor(st.y*u_tex0Resolution.y));
-    float value = getNumber(u_tex0,u_tex0Resolution,pos.x,pos.y);
     vec4 tex = texture2D(u_tex0,st);
+    
+    vec2 pos = vec2(u_time,floor(st.y*u_tex0Resolution.y));
     vec2 coord = getCoord(u_tex0Resolution,pos.x,pos.y);
-    vec2 zone = step(coord-vec2(pixel.x*.5,0.025),st)-step(coord+vec2(pixel.x*.5,0.025),st);
-    tex.rgb += zone.x*zone.y;
-
+    vec2 header = step(coord-vec2(pixel.x*.5,0.025),st)-step(coord+vec2(pixel.x*.5,0.025),st);
+    
     st.y *= u_tex0Resolution.y;
-
     vec2 ipos = floor(st);
     vec2 fpos = fract(st);
 
     vec3 color = tex.rgb;
-    color += writeValue(fpos,vec2(13.,3.),value);
+    color += header.x*header.y;
+    color += writeValue(fpos,vec2(10.,3.),u_tex0, coord);
 
     gl_FragColor = vec4( color , 1.0);
 }
