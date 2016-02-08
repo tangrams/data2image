@@ -55,7 +55,7 @@ float char (vec2 st, float n) {
     borders *= step(0.01,fpos.x) * step(0.01,fpos.y);   // inner
     borders *= step(0.0,st)*step(0.0,1.-st);            // outer
 
-    return step(.5,1.0-pct) * borders.x * borders.y;
+    return (1.0-pct) * borders.x * borders.y;
 }
 
 float writeValue(vec2 st, vec2 size, sampler2D tex, vec2 coord) {
