@@ -5,17 +5,22 @@
 		<title>Data2Image</title>
 		<!-- GLSL Canvas -->
 		<script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/build/GlslCanvas.min.js"></script>
-		<!-- <script type="text/javascript" src="http://localhost:8000/build/GlslCanvas.min.js"></script> -->
+		<link type="text/css" rel="stylesheet" href="https://rawgit.com/patriciogonzalezvivo/glslEditor/gh-pages/build/css/main.css">
+    <script type="application/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslEditor/gh-pages/build/js/glslEditor.js"></script>
+
 		<script type="text/javascript" src="https://rawgit.com/tangrams/data2image/gh-pages/build/Data2Image.min.js"></script>
+		
+		<!-- <script type="text/javascript" src="http://localhost:8000/build/GlslCanvas.min.js"></script> -->
+		// <script type="text/javascript" src="build/Data2Image.min.js"></script>
 		<style type="text/css">
 		body {
-			overflow: hidden;
-			font-family: monospace;
-			background-color: black;
+			height: 100%;
+			margin: 0;
+  			background: #272822;
 		}
-		canvas {
+/*		canvas {
 			width: 100%;
-		}
+		}*/
 		#shader {
 			width: 500px;
 			height: 500px;
@@ -26,20 +31,24 @@
 			width: 100%;
 			text-align: center;
 		}
+		#glsl_editor {
+				height: 100%;
+			}
 		</style>
 	</head>
 	<body>
-		<div id='texture'> </div>
-		<div id='container'>
+		<!-- <div id='texture'> </div> -->
+		<!-- <div id='container'>
 			<canvas id='shader' data-fragment-url="barcode.frag" width="500" height="500"></canvas>
-		</div>
+		</div> -->
+		<div id="glsl_editor"></div>
 		<script type="text/javascript">
 			var data = new Data2Image();
 			window.data = data;
 			var instances = 100;
 			data.setTotalInstances(instances);
 			data.addElement('integer','number', (instance, element) => {
-				return instance*12;
+				return instance*100;
 			});
 			data.addElement('float','number', (instance, element) => {
 				return instance/instances;
@@ -54,11 +63,21 @@
 				return [0,0,(instance/instances)*255];
 			});
 			var texture = data.generate();
-			document.getElementById("texture").appendChild(texture);
-
-			var shader = new GlslCanvas(document.getElementById("shader"));
-
-			shader.setTextureUniform('u_tex0',texture, { filtering:'nearest' });
+			// document.getElementById("texture").appendChild(texture);
+			var glslEditor = new GlslEditor('#glsl_editor', { 
+			    		canvas_size: 500,
+			    		// canvas_follow: true,
+			            // divider: true,
+			    		theme: 'monokai',
+			    		multipleBuffers: true,
+			            watchHash: true,
+			            fileDrops: true,
+			    		menu: true
+			    	});
+			glslEditor.open('barcode.frag');
+			glslEditor.sandbox.canvas.setTextureUniform('u_tex0',texture, { filtering:'nearest' });
+			// var shader = new GlslCanvas(document.getElementById("shader"));
+			// shader.setTextureUniform('u_tex0',texture, { filtering:'nearest' });
 		</script>
 	</body>
 </html>

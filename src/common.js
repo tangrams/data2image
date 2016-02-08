@@ -4,18 +4,11 @@ export function clamp(value, min, max) {
 }
 
 export function getDecimals(number) {
-	return (Math.abs(number) + '').replace('.', '').length-1;
+	let match = (Math.abs(number) + '').match(/\d+\.(\d+)/);
+	return match? match[1].length : 0;
 }
 
 var ranges = {
-	char: [-128, 127],
-	uchar: [0, 255],
-	int: [-8290688, 8290687],
-	uint: [0, 16581375],
-	float: [-1, 1],
-	ufloat: [0, 1],
-	lon: [-180,180],
-	lat: [-90,90],
 	number: [-16581375,16581375],
 	color: [0, 255],
 	rgb: [0, 255],
@@ -40,6 +33,7 @@ export function encodeValue (value, type) {
 		let d = getDecimals(value);
 		let uint = Math.abs(value) * Math.pow(10,d);	// transform the number into unsigned integers
 		let pres = 128 + d*s;
+		// console.log(value,s,d,uint,pres);
 	    return [
 	        Math.floor(uint%255),
 	        Math.floor(uint/255)%255,
