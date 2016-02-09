@@ -56,7 +56,7 @@
 			    		menu: true
 			    	});
 			glslEditor.open('shader.frag');
-			glslEditor.sandbox.canvas.setTextureUniform('u_tex0',texture, { filtering:'nearest' });
+			glslEditor.sandbox.canvas.setTextureUniform('u_tex0', texture, { filtering:'linear' });
 			// var shader = new GlslCanvas(document.getElementById("shader"));
 			// shader.setTextureUniform('u_tex0',texture, { filtering:'nearest' });
 		</script>
