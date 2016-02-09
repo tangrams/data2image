@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Data2Image</title>
+		<!-- GLSL Canvas -->
+		<script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/build/GlslCanvas.min.js"></script>
+		<link type="text/css" rel="stylesheet" href="https://rawgit.com/patriciogonzalezvivo/glslEditor/gh-pages/build/css/main.css">
+    <script type="application/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslEditor/gh-pages/build/js/glslEditor.js"></script>
+		<script type="text/javascript" src="build/Data2Image.min.js"></script>
+		<style type="text/css">
+		body {
+			margin: 0;
+  			background: #272822;
+		}
+		#glsl_editor {
+			height: 100%;
+		}
+		</style>
+	</head>
+	<body>
+		<div id="glsl_editor"></div>
+		<script type="text/javascript">
+        	var data = new Data2Image();
+			var instances = 200;
+			data.setTotalInstances(instances);
+			data.addElement('negative_integerx100','number', (instance, element) => {
+				return -instance*100;
+			});
+			data.addElement('negative_integerx10','number', (instance, element) => {
+				return -instance*10;
+			});
+			data.addElement('negative_integer','number', (instance, element) => {
+				return -instance;
+			});
+			data.addElement('float','number', (instance, element) => {
+				return instance/instances;
+			});
+			data.addElement('integer','number', (instance, element) => {
+				return instance;
+			});
+			data.addElement('integerx5','number', (instance, element) => {
+				return instance*5;
+			});
+			data.addElement('integerx10','number', (instance, element) => {
+				return instance*10;
+			});
+			data.addElement('integerx100','number', (instance, element) => {
+				return instance*100;
+			});
+			var glslEditor = new GlslEditor('#glsl_editor', { 
+		    		canvas_size: 500,
+		    		// canvas_follow: true,
+		            // divider: true,
+		    		theme: 'monokai',
+		    		multipleBuffers: true,
+		            watchHash: true,
+		            fileDrops: true,
+		    		menu: true
+		    	});
+			glslEditor.open('shader.frag');
+			glslEditor.sandbox.canvas.setTextureUniform('u_tex0', data.generate(), { filtering:'nearest' });
+		</script>
+	</body>
+</html>

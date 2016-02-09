@@ -107,17 +107,14 @@ vec2 getCoord(vec2 res, float col, float row) {
 vec3 getElements(sampler2D tex, vec2 coord) {
     highp vec4 value = texture2D(tex, coord);
     highp float uint = (value.x*255.)+(value.y*65025.)+(value.z*16581375.);
-    float press = ceil(value.a*255.)-127.;
-    float s = sign(press);
-    press = abs(press);
-    press = pow(10.,-floor(press));
-    return vec3(uint, press, s);
+    float press = ceil(value.a*255.)-244.;
+    return vec3(uint, abs(press), sign(press));
 }
 
 float getNumber(sampler2D tex, vec2 res, float col, float row) {
     vec2 coord = getCoord(res, col, row);
-    vec3 elements = getElements(tex, coord);
-    return elements.x * elements.y * elements.z;
+    highp vec3 elements = getElements(tex, coord);
+    return elements.x * pow(10.,-floor(elements.y)) * elements.z;
 }
 
 void main(){
@@ -136,11 +133,11 @@ void main(){
     vec3 color = tex.rgb;
     color += header.x*header.y;
     vec3 elements = getElements(u_tex0, coord);
-    float value = elements.x * elements.y * elements.z;
+    float value = elements.x * pow(10.,-floor(elements.y)) * elements.z;
     
     // Multiples of 4x5 work best
     vec2 vFontSize = vec2(4.0, 15.0);
-    color += PrintValue(fpos*vec2(140.,70.), vec2(115.0,5.0), vFontSize, value, 1., 3.);
+    color += PrintValue(fpos*vec2(140.,70.), vec2(110.0,5.0), vFontSize, value, 1., elements.y-1.);
 
     gl_FragColor = vec4( color , 1.0);
 }

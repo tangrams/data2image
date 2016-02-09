@@ -2,63 +2,112 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		<title>Data2Image</title>
-		<!-- GLSL Canvas -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css">
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+		<script type="text/javascript" src="https://rawgit.com/chjj/marked/master/lib/marked.js"></script>
+
 		<script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/build/GlslCanvas.min.js"></script>
-		<link type="text/css" rel="stylesheet" href="https://rawgit.com/patriciogonzalezvivo/glslEditor/gh-pages/build/css/main.css">
-    <script type="application/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslEditor/gh-pages/build/js/glslEditor.js"></script>
-		// <script type="text/javascript" src="build/Data2Image.min.js"></script>
+		<script type="text/javascript" src="build/Data2Image.min.js"></script>
+
+		<link type='text/css' rel='stylesheet' href="css/github.css">
+		<link rel="stylesheet" href="https://mapzen.com/common/styleguide/styles/styleguide.css">
 		<style type="text/css">
-		body {
-			margin: 0;
-  			background: #272822;
-		}
-		#glsl_editor {
-			height: 100%;
-		}
+			canvas {
+				position: relative;
+				left: 50%;
+				transform: translate(-50%, 0px);
+			}
+
+			img {
+				position: relative;
+				left: 50%;
+				transform: translate(-50%, 0px);
+			}
 		</style>
 	</head>
 	<body>
-		<div id="glsl_editor"></div>
+		<div class="container">
+			<div id="content"> </div>
+		</div>
+		<script src="https://mapzen.com/common/styleguide/scripts/mapzen-styleguide.min.js"></script>
 		<script type="text/javascript">
-			var data = new Data2Image();
-			window.data = data;
-			var instances = 200;
-			data.setTotalInstances(instances);
-			data.addElement('integer','number', (instance, element) => {
-				return instance;
-			});
-			data.addElement('float','number', (instance, element) => {
-				return instance/instances;
-			});
-			data.addElement('negative_integer','number', (instance, element) => {
-				return -instance;
-			});
-			data.addElement('integerx5','number', (instance, element) => {
-				return instance*5;
-			});
-			data.addElement('integerx10','number', (instance, element) => {
-				return instance*10;
-			});
-			data.addElement('integerx100','number', (instance, element) => {
-				return instance*100;
-			});
-			var texture = data.generate();
-			// document.getElementById("texture").appendChild(texture);
-			var glslEditor = new GlslEditor('#glsl_editor', { 
-			    		canvas_size: 500,
-			    		// canvas_follow: true,
-			            // divider: true,
-			    		theme: 'monokai',
-			    		multipleBuffers: true,
-			            watchHash: true,
-			            fileDrops: true,
-			    		menu: true
-			    	});
-			glslEditor.open('shader.frag');
-			glslEditor.sandbox.canvas.setTextureUniform('u_tex0', texture, { filtering:'linear' });
-			// var shader = new GlslCanvas(document.getElementById("shader"));
-			// shader.setTextureUniform('u_tex0',texture, { filtering:'nearest' });
+		var data, shader;
+
+			function fetchHTTP(url, methood){
+	            var request = new XMLHttpRequest(), response;
+
+	            request.onreadystatechange = function () {
+	                if (request.readyState === 4 && request.status === 200) {
+	                    response = request.responseText;
+	                }
+	            }
+	            request.open(methood ? methood : 'GET', url, false);
+	            request.send();
+	            return response;
+	        }
+
+	        function loadMarkdown(){
+	        	var content = document.getElementById('content');
+
+	            var mdText = fetchHTTP("README.md");
+	            content.innerHTML = marked(mdText);
+
+	            // Load codes tags that have "src" attributes
+		        var list = document.getElementsByTagName("code");
+		        console.log(list)
+		        for(var i = 0; i < list.length; i++){
+		            if (list[i].className == "lang-glsl" ||
+		                list[i].className == "lang-js" ){
+		                hljs.highlightBlock(list[i]);
+		            }
+		        }
+	        }
+
+	        function MakeData() {
+	        	data = new Data2Image();
+
+				var instances = 200;
+				data.setTotalInstances(instances);
+				data.addElement('negative_integerx100','number', (instance, element) => {
+					return -instance*100;
+				});
+				data.addElement('negative_integerx10','number', (instance, element) => {
+					return -instance*10;
+				});
+				data.addElement('negative_integer','number', (instance, element) => {
+					return -instance;
+				});
+				data.addElement('float','number', (instance, element) => {
+					return instance/instances;
+				});
+				data.addElement('integer','number', (instance, element) => {
+					return instance;
+				});
+				data.addElement('integerx5','number', (instance, element) => {
+					return instance*5;
+				});
+				data.addElement('integerx10','number', (instance, element) => {
+					return instance*10;
+				});
+				data.addElement('integerx100','number', (instance, element) => {
+					return instance*100;
+				});
+	        }
+
+	        function loadShaderEditor() {
+				shader = new GlslCanvas(document.getElementById("shader"));
+				shader.setTextureUniform('u_tex0', window.data.generate(), { filtering:'nearest' });
+	        }
+
+	        window.onload = function(){
+	            loadMarkdown();
+	            MakeData();
+	            loadShaderEditor();
+	        };
 		</script>
 	</body>
 </html>
