@@ -6,22 +6,24 @@
 		<script type="text/javascript" src="build/Data2Image.min.js"></script>
 		<script type="text/javascript" src="https://rawgit.com/zz85/timeliner/master/timeliner.js"></script>
 		<script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/build/GlslCanvas.min.js"></script>
+		<link type="text/css" rel="stylesheet" href="https://rawgit.com/patriciogonzalezvivo/glslEditor/gh-pages/build/css/main.css">
+    	<script type="application/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslEditor/gh-pages/build/js/glslEditor.js"></script>
 		<style type="text/css">
 		body {
-			overflow: hidden;
-			font-family: monospace;
-		}
-
-		canvas {
-			width: 100%;
+			font-family: Helvetica, Arial, sans-serif;
+			color: white;
+			margin: 0;
+  			background: #272822;
 		}
 
 		#controls {
 			display: inline;
 		}
+
 		.control_element {
 			display: inline;
 		}
+
 		#shader {
 			width: 500px;
 			height: 500px;
@@ -32,17 +34,18 @@
 			width: 100%;
 			text-align: center;
 		}
+		#glsl_editor {
+			height: 100%;
+		}
 		</style>
 	</head>
 	<body>
 		<ul id="controls">
 			<li class="control_element"> Fps: 1/<input type="number" id="fps" value="24"> </li>
-			<li class="control_element"> <button type="button" onclick="generateTable()">Generate Table</button> </li>
+			<li class="control_element"> <button type="button" onclick="generateTable()">Regenerate table</button> </li>
 		</ul>
-		<div id='texture'> </div>
-		<div id='container'>
-			<canvas id='shader' data-fragment-url="shader.frag" width="500" height="500"></canvas>
-		</div>
+		<div id='glsl_editor'></div>
+		
 		<script type="text/javascript">
 			var data;
 			var timeliner = new Timeliner();
@@ -51,7 +54,7 @@
 			var totalInstances = 0;
 			var step = 1/fps;
 			var frames = [];
-			var shader = null;
+			var glslEditor = null;
 			reloadTimeline();
 			generateTable();
 
@@ -108,11 +111,21 @@
 						});
 					}
 				}
-				// document.getElementById("texture").appendChild(data.generate());
-				if (!shader) {
-					shader = new GlslCanvas(document.getElementById("shader"));
+
+				if (!glslEditor) {
+					glslEditor = new GlslEditor('#glsl_editor', { 
+			    		canvas_size: 500,
+			    		// canvas_follow: true,
+			            // divider: true,
+			    		theme: 'monokai',
+			    		multipleBuffers: true,
+			            watchHash: true,
+			            fileDrops: true,
+			    		menu: true
+			    	});
+					glslEditor.open('shader.frag');
 				}
-				shader.loadTexture('u_tex0',data.generate(),{filtering: 'nearest'});
+				glslEditor.sandbox.canvas.loadTexture('u_tex0',data.generate(),{filtering: 'nearest'});
 			}
 		</script>
 	</body>

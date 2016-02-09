@@ -1,0 +1,87 @@
+{
+	"version": "1.4.0",
+	"modified": "Mon Dec 08 2014 10:41:11 GMT+0800 (SGT)",
+	"title": "Untitled",
+	"name": "simple",
+	"totalTime": 10,
+	"layers": [
+		{
+			"name": "a",
+			"values": [
+				{
+					"time": 0,
+					"value": 0.30000000000000004,
+					"_color": "#b3cc67",
+					"tween": "linear"
+				},
+				{
+					"time": 30,
+					"value": 87.00000000000001,
+					"_color": "#c9ad77"
+				}
+			],
+			"_value": 87.00000000000001,
+			"_color": "#6385c6"
+		},
+		{
+			"name": "b",
+			"values": [
+				{
+					"time": 0,
+					"value": 0.1,
+					"_color": "#8697f2",
+					"tween": "quadEaseIn"
+				},
+				{
+					"time": 30,
+					"value": -3.3000000000000003,
+					"_color": "#98a2e1"
+				}
+			],
+			"_value": -3.3000000000000003,
+			"_color": "#170be6"
+		},
+		{
+			"name": "c",
+			"values": [
+				{
+					"time": 0,
+					"value": 0.09999999999999998,
+					"_color": "#61f4a4",
+					"tween": "quadEaseOut"
+				},
+				{
+					"time": 30,
+					"value": 13.8,
+					"_color": "#41e5d4"
+				}
+			],
+			"_value": 13.8,
+			"_color": "#475255"
+		},
+		{
+			"name": "d",
+			"values": [
+				{
+					"time": 0,
+					"value": 0.1,
+					"_color": "#bcad28",
+					"tween": "quadEaseInOut"
+				},
+				{
+					"time": 30,
+					"value": -5.200000000000001,
+					"_color": "#a9ffa0"
+				}
+			],
+			"_value": -5.200000000000001,
+			"_color": "#a92ea1"
+		}
+	],
+	"ui": {
+		"currentTime": 30,
+		"totalTime": 30,
+		"scrollTime": 0,
+		"timeScale": "42"
+	}
+}
