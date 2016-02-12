@@ -58,4 +58,4 @@ float getNumber(sampler2D texture, vec2 texture_resolution, float col, float row
 }
 ```
 
-Interested on playing with this, use [this editor](editor.html).
+Interested on playing with this, use [this editor](editor.html), [this timeline](timeline.html) or [both](timeline-editor.html).
