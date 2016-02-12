@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>Data2Image</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<script type="text/javascript" src="build/Data2Image.min.js"></script>
+		<link rel="stylesheet" href="https://mapzen.com/common/styleguide/styles/styleguide.css">
+		<style type="text/css">
+			canvas {
+				width: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div id="content"> </div>
+		</div>
+		<script src="https://mapzen.com/common/styleguide/scripts/mapzen-styleguide.min.js"></script>
+		<script type="text/javascript">
+		var data, shader;
+
+        	data = new Data2Image();
+        	
+			var instances = 200;
+			data.setTotalInstances(instances);
+			data.addElement('negative_integerx100','number', (instance, element) => {
+				return -instance*100;
+			});
+			data.addElement('negative_integerx10','number', (instance, element) => {
+				return -instance*10;
+			});
+			data.addElement('negative_integer','number', (instance, element) => {
+				return -instance;
+			});
+			data.addElement('float','number', (instance, element) => {
+				return instance/instances;
+			});
+			data.addElement('integer','number', (instance, element) => {
+				return instance;
+			});
+			data.addElement('integerx5','number', (instance, element) => {
+				return instance*5;
+			});
+			data.addElement('integerx10','number', (instance, element) => {
+				return instance*10;
+			});
+			data.addElement('integerx100','number', (instance, element) => {
+				return instance*100;
+			});
+			data.addElement('unsigned_integer','uint', (instance, element) => {
+				return instance;
+			});
+			data.addElement('signed_integer','int', (instance, element) => {
+				return instance;
+			});
+			data.addElement('unsigned_float','ufloat', (instance, element) => {
+				return instance/instances;
+			});
+			data.addElement('signed_float','float', (instance, element) => {
+				return instance/instances;
+			});
+
+			document.getElementById("content").appendChild(data.generate());
+
+		</script>
+	</body>
+</html>

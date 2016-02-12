@@ -1,14 +1,23 @@
-import { clamp, getDecimals } from './common';
+import { clamp, map, decimals } from './common';
 
+// Default Ranges
 var ranges = {
 	number: [-16581375,16581375],
-	color: [0, 255],
-	rgb: [0, 255],
-	vec2: [0, 1],
-	vec3: [0, 1],
-	vec4: [0, 1],
+	char: 	[-128, 127],
+	uchar: 	[0, 255],
+	int: 	[-8290688, 8290687],
+	uint: 	[0, 16581375],
+	float: 	[-1, 1],
+	ufloat: [0, 1],
+	color: 	[0, 255],
+	rgb: 	[0, 255],
+	position: [-1, 1],
+	vec2: 	[-1, 1],
+	vec3: 	[-1, 1],
+	vec4: 	[-1, 1]
 };
 
+// Class
 export default class Data2Image {
 	constructor (options) {
 		this.options = options || {};
@@ -16,23 +25,23 @@ export default class Data2Image {
 		this.instances = 0;
 	}
 
-	addElement(name, type, populate_callback) {
-		this.elements.push({ name: name, type: type, fill: populate_callback, id: this.elements.length });
+	addElement (name, type, populate_callback, range) {
+		this.elements.push({ id: this.elements.length, name: name, type: type, range: range, fill: populate_callback });
 	}
 
-	getTotalElements() {
+	getTotalElements () {
 		return this.elements.length;
 	}
 
-	setTotalInstances(number) {
+	setTotalInstances (number) {
 		this.instances = number;
 	}
 
-	getTotalInstances() {
+	getTotalInstances () {
 		return this.instances;
 	}
 
-	getTableSize() {
+	getTableSize () {
 		return [this.getTotalInstances(), this.getTotalElements()];
 	}
 
@@ -55,7 +64,7 @@ export default class Data2Image {
 	        for (x = 0; x < width; x++) {
 	            index = (y*width+x)*channels;
 	            let v = this.elements[y].fill(x, this.elements[y]);
-				value = encodeValue(v, this.elements[y].type);
+				value = encodeValue(v, this.elements[y].type, this.elements[y].range);
 				for (i = 0; i < channels; i++) {
 					data[index+i] = value[i];
 				}
@@ -66,23 +75,75 @@ export default class Data2Image {
 	}
 
 	version () {
-        return '0.0.1';
+        return '0.0.2';
     }
 }
 
-function getRangeFor(type) {
+function getRangeFor (type) {
 	return ranges[type];
 }
 
-function encodeValue (value, type) {
-	if (value < getRangeFor(type)[0] || value > getRangeFor(type)[1]) {
-		console.log('Value',value,'of type', type,'is out of range',getRangeFor(type),'will be clamped to',value);
-		value = clamp(value,getRangeFor(type)[0],getRangeFor(type)[1]);
+function clampValue (value, range) {
+	if (value < range[0] || value > range[1]) {
+		console.log('Value',value,'is out of range',range,'will be clamped to',value);
+		return clamp(value,range[0],range[1]);
+	}
+	else {
+		return value;
+	}
+}
+
+function normalizeValue (value, range) {
+	return map(value,range[0],range[1],0,1);
+}
+
+function encodeValue (value, type, range) {
+	if (!range) {
+		range = getRangeFor(type);
 	}
 
-	if (type === 'number') {
+	if (typeof value === 'number') {
+		value = clampValue(value, range);
+		if (type !== 'number') {
+			// "Number" type don't need normaliztion because tries to set the presition dinamically
+			value = normalizeValue(value, range);
+		}
+	} 
+	else if (Array.isArray(value)) {
+		for (let i in value) {
+			value[i] = clampValue(value[i], range);
+			if (type !== 'number') {
+				// "Number" type don't need normaliztion because tries to set the presition dinamically
+				value[i] = normalizeValue(value[i], range);
+			}
+		}
+	} 
+	else {
+		console.log('Value type could not be read', value, type, range);
+		return;
+	}
+	
+	if (type === 'uchar' || type === 'char') {
+		value *= 255;
+	    return [
+	        Math.floor(value),
+	        Math.floor(value),
+	        Math.floor(value),
+	        255
+	    ];
+	}
+	else if (type === 'int' || type === 'uint'  || type === 'float' || type === 'ufloat') {
+		value = value*16581375;
+	    return [
+	        Math.floor(value%255),
+	        Math.floor(value/255)%255,
+	        Math.floor(value/(255*255)),
+	        255
+	    ];
+	}
+	else if (type === 'number') {
 		let s = Math.sign(value);
-		let d = getDecimals(value)+1.;
+		let d = decimals(value)+1.;
 		let uint = Math.abs(value) * Math.pow(10,d);	// transform the number into unsigned integers
 		let pres = 244 + d*s;
 		// console.log("Value:",value,"S:",s,"D:",d,"Uint:",uint,"Press:",pres);
@@ -93,17 +154,9 @@ function encodeValue (value, type) {
 	        pres
 	    ];
 	}
-	else if (type === 'position') {
-		// Values have to be normalized [-1,1]
-		return encodeValue(value, 'vec2');
-	}
-	else if (type === 'vec2') {				
-		let x = value[0];
-		let y = value[1];
-		x = .5+x*.5;;
-		y = .5+y*.5;
-		x *= 65025;
-		y *= 65025;
+	else if (type === position || type === 'vec2') {				
+		let x = value[0]*65025;
+		let y = value[1]*65025;
 		return [
 			Math.floor(x%255),
 	        Math.floor(x/255)%255,
@@ -111,16 +164,12 @@ function encodeValue (value, type) {
 	        Math.floor(y/255)%255
 	    ];
 	}
-	else if (type === 'color') {
-		// Values between [0,255]
-		return encodeValue(value, 'rgb');
-	}
-	else if (type === 'rgb' || type === 'vec3' || type === 'vec4') {
+	else if (type === 'color' || type === 'rgb' || type === 'vec3' || type === 'vec4') {
 		return [
-	        Math.floor((value[0]/getRangeFor(type)[1])*255),
-	        Math.floor((value[1]/getRangeFor(type)[1])*255),
-	        Math.floor((value[2]/getRangeFor(type)[1])*255),
-	        value[3]? Math.floor(value[3]/255): 255
+	        Math.floor(value[0]*255),
+	        Math.floor(value[1]*255),
+	        Math.floor(value[2]*255),
+	        value[3] ? Math.floor(value[3]*255): 255
 	    ];
 	}
 }
