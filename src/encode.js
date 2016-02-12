@@ -9,9 +9,9 @@ var ranges = {
 	uint: 	[0, 16581375],
 	float: 	[-1, 1],
 	ufloat: [0, 1],
+	position: [-1, 1],
 	color: 	[0, 255],
 	rgb: 	[0, 255],
-	position: [-1, 1],
 	vec2: 	[-1, 1],
 	vec3: 	[-1, 1],
 	vec4: 	[-1, 1]

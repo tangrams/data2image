@@ -57,6 +57,7 @@ float getNumber(sampler2D tex, vec2 res, float col, float row) {
 }`+'\n',
     position: position,
     color: color,
+    rgb: color,
     vec2: position,
     vec3: color,
     vec4: color
