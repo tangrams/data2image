@@ -85,7 +85,7 @@ function getRangeFor (type) {
 
 function clampValue (value, range) {
 	if (value < range[0] || value > range[1]) {
-		console.log('Value',value,'is out of range',range,'will be clamped to',value);
+		console.warn('Value',value,'is out of range',range,'will be clamped to', clamp(value,range[0],range[1]));
 		return clamp(value,range[0],range[1]);
 	}
 	else {
