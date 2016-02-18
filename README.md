@@ -35,7 +35,7 @@ var canvas = data.generate();
 
 This construct a database of rows and columns which values are store as color.
 
-<canvas id=“shader”  data-fragment-url=“data/display.frag” width=“800” height=“600” ></canvas>
+<canvas id="shader" data-fragment-url="data/display.frag" width="800" height="600" ></canvas>
 
 To recover the values on the shader you can use the following code:
 
