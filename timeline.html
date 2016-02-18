@@ -41,7 +41,7 @@
 		</ul>
 		<div id='texture'> </div>
 		<div id='container'>
-			<canvas id='shader' data-fragment-url="shader.frag" width="500" height="500"></canvas>
+			<canvas id='shader' data-fragment-url="data/display.frag" width="500" height="500"></canvas>
 		</div>
 		<script type="text/javascript">
 			var data;
@@ -69,21 +69,7 @@
 	        }
 
 			function reloadTimeline () {
-				// timeliner.load({
-				// 	"version":"1.4.0",
-				// 	"modified":"Mon Dec 08 2014 10:41:11 GMT+0800 (SGT)",
-				// 	"title":"Untitled",
-				// 	"name":"simple",
-				// 	"totalTime": 10,
-				// 	"layers":[],
-				// 	"ui":{
-				// 		"currentTime":0,
-				// 		"totalTime": duration,
-				// 		"scrollTime":0,
-				// 		"timeScale":40
-				// 	}
-				// });
-				var file = fetchHTTP('timeliner-test.json');
+				var file = fetchHTTP('data/timeliner-display.json');
 				timeliner.load(JSON.parse(file));
 			}
 

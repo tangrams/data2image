@@ -1,0 +1,105 @@
+{
+	"version": "1.4.0",
+	"modified": "Mon Dec 08 2014 10:41:11 GMT+0800 (SGT)",
+	"title": "Untitled",
+	"name": "simple",
+	"totalTime": 10,
+	"layers": [
+		{
+			"name": "a",
+			"values": [
+				{
+					"time": 0,
+					"value": 100,
+					"_color": "#b3cc67",
+					"tween": "linear"
+				},
+				{
+					"time": 15,
+					"value": -100.00000000000003,
+					"_color": "#c9ad77",
+					"tween": "linear"
+				},
+				{
+					"time": 30,
+					"value": 100,
+					"_color": "#ee6cc6"
+				}
+			],
+			"_value": 45.66193333332427,
+			"_color": "#6385c6"
+		},
+		{
+			"name": "b",
+			"values": [
+				{
+					"time": 0,
+					"value": -100,
+					"_color": "#8697f2",
+					"tween": "linear"
+				},
+				{
+					"time": 15,
+					"value": 100,
+					"_color": "#98a2e1",
+					"tween": "linear"
+				},
+				{
+					"time": 30,
+					"value": -99.99999999999999,
+					"_color": "#f0b460"
+				}
+			],
+			"_value": -45.66193333332428,
+			"_color": "#170be6"
+		},
+		{
+			"name": "c",
+			"values": [
+				{
+					"time": 0,
+					"value": 0,
+					"_color": "#61f4a4",
+					"tween": "linear"
+				},
+				{
+					"time": 30,
+					"value": 100,
+					"_color": "#7dfbb7"
+				}
+			],
+			"_value": 13.58451666666893,
+			"_color": "#475255"
+		},
+		{
+			"name": "d",
+			"values": [
+				{
+					"time": 0,
+					"value": 0,
+					"_color": "#bcad28",
+					"tween": "quadEaseIn"
+				},
+				{
+					"time": 15,
+					"value": 50,
+					"_color": "#a9ffa0",
+					"tween": "quadEaseOut"
+				},
+				{
+					"time": 30,
+					"value": 0,
+					"_color": "#e15282"
+				}
+			],
+			"_value": 3.690781861340119,
+			"_color": "#a92ea1"
+		}
+	],
+	"ui": {
+		"currentTime": 4.0753550000006795,
+		"totalTime": 30,
+		"scrollTime": 0,
+		"timeScale": "42"
+	}
+}

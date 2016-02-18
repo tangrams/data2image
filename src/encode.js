@@ -86,10 +86,10 @@ export function encodeValue (value, type, range) {
 		let pres = 244 + d*s;
 		// console.log("Value:",value,"S:",s,"D:",d,"Uint:",uint,"Press:",pres);
 	    return [
-	        Math.floor(uint%255),
+	        Math.floor(uint)%255,
 	        Math.floor(uint/255)%255,
-	        Math.floor(uint/(255*255)),
-	        pres
+	        Math.floor(uint/65025)%255,
+	        Math.floor(pres)%255
 	    ];
 	}
 	else if (type === 'position' || type === 'vec2') {				

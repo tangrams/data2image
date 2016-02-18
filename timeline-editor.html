@@ -17,7 +17,10 @@
 		}
 
 		#controls {
-			display: inline;
+		    background-color: #36383c;
+		    margin: 5px;
+		    right: 10px;
+		    position: fixed;
 		}
 
 		.control_element {
@@ -41,8 +44,8 @@
 	</head>
 	<body>
 		<ul id="controls">
-			<li class="control_element"> Fps: 1/<input type="number" id="fps" value="24"> </li>
-			<li class="control_element"> <button type="button" onclick="generateTable()">Regenerate table</button> </li>
+			<li class="control_element"> Fps: 1/<input type="number" name="fps" id="fps" value="30" min="1" max="120" step="1"> </li>
+			<li class="control_element"> <button type="button" onclick="generateTable()">Generate</button> </li>
 		</ul>
 		<div id='glsl_editor'></div>
 		
@@ -72,21 +75,7 @@
 	        }
 
 			function reloadTimeline () {
-				// timeliner.load({
-				// 	"version":"1.4.0",
-				// 	"modified":"Mon Dec 08 2014 10:41:11 GMT+0800 (SGT)",
-				// 	"title":"Untitled",
-				// 	"name":"simple",
-				// 	"totalTime": 10,
-				// 	"layers":[],
-				// 	"ui":{
-				// 		"currentTime":0,
-				// 		"totalTime": duration,
-				// 		"scrollTime":0,
-				// 		"timeScale":40
-				// 	}
-				// });
-				var file = fetchHTTP('timeliner-test.json');
+				var file = fetchHTTP('data/timeliner-cross.json');
 				timeliner.load(JSON.parse(file));
 			}
 
@@ -115,15 +104,14 @@
 				if (!glslEditor) {
 					glslEditor = new GlslEditor('#glsl_editor', { 
 			    		canvas_size: 500,
-			    		// canvas_follow: true,
-			            // divider: true,
 			    		theme: 'monokai',
 			    		multipleBuffers: true,
 			            watchHash: true,
 			            fileDrops: true,
 			    		menu: true
 			    	});
-					glslEditor.open('shader.frag');
+					glslEditor.open('data/display.frag');
+					glslEditor.open('data/cross.frag','cross.frag');
 				}
 				glslEditor.shader.canvas.loadTexture('u_tex0',data.generate(),{filtering: 'nearest'});
 			}

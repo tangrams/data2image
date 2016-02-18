@@ -105,15 +105,15 @@ vec2 getCoord(vec2 res, float col, float row) {
 }
 
 vec3 getElements(sampler2D tex, vec2 coord) {
-    highp vec4 value = texture2D(tex, coord);
-    highp float uint = (value.x*255.)+(value.y*65025.)+(value.z*16581375.);
-    float press = ceil(value.a*255.)-244.;
-    return vec3(uint, abs(press), sign(press));
+    vec4 value = texture2D(tex, coord);
+    float uint = dot(value.rgb,vec3(255.,65025.,16581375.));
+    float press = floor(value.a*255.)-244.;
+    return vec3(floor(uint), abs(press), sign(press));
 }
 
 float getNumber(sampler2D tex, vec2 res, float col, float row) {
     vec2 coord = getCoord(res, col, row);
-    highp vec3 elements = getElements(tex, coord);
+    vec3 elements = getElements(tex, coord);
     return elements.x * pow(10.,-floor(elements.y)) * elements.z;
 }
 
@@ -124,7 +124,7 @@ void main(){
     
     vec2 pos = vec2(u_time,floor(st.y*u_tex0Resolution.y));
     vec2 coord = getCoord(u_tex0Resolution,pos.x,pos.y);
-    vec2 header = step(coord-vec2(pixel.x*.5,0.025),st)-step(coord+vec2(pixel.x*.5,0.025),st);
+    vec2 header = step(coord-vec2(pixel.x,0.025),st)-step(coord+vec2(pixel.x,0.025),st);
     
     st.y *= u_tex0Resolution.y;
     vec2 ipos = floor(st);
