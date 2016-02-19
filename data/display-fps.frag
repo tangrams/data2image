@@ -11,6 +11,8 @@ uniform vec2 u_tex0Resolution;
 uniform vec2 u_resolution;
 uniform float u_time;
 
+uniform float u_frame;
+
 const float kCharBlank = 12.0;
 const float kCharMinus = 11.0;
 const float kCharDecimalPoint = 10.0;
@@ -123,6 +125,7 @@ void main(){
     vec4 tex = texture2D(u_tex0,st);
     
     float t = u_time*100.;
+    t = u_frame;    
     vec2 pos = vec2(t,floor(st.y*u_tex0Resolution.y));
     vec2 coord = getCoord(u_tex0Resolution,pos.x,pos.y);
     vec2 header = step(coord-vec2(pixel.x,0.025),st)-step(coord+vec2(pixel.x,0.025),st);

@@ -41,7 +41,7 @@
 		</ul>
 		<div id='texture'> </div>
 		<div id='container'>
-			<canvas id='shader' data-fragment-url="data/display.frag" width="500" height="500"></canvas>
+			<canvas id='shader' data-fragment-url="data/display-fps.frag" width="500" height="500"></canvas>
 		</div>
 		<script type="text/javascript">
 			var data;
@@ -98,6 +98,15 @@
 					shader = new GlslCanvas(document.getElementById("shader"));
 				}
 				shader.loadTexture('u_tex0', data.getUrl(), { filtering: 'nearest' } );
+				_data.setValue('ui:currentTime',0);
+				render();
+			}
+
+			function render() {
+				if (_data.data.ui.currentTime) {
+					shader.uniform('1f', 'float', 'u_frame', _data.data.ui.currentTime*parseFloat(fps));
+				}
+				window.requestAnimationFrame(render);
 			}
 		</script>
 	</body>

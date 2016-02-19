@@ -10,6 +10,7 @@ uniform vec2 u_tex0Resolution;
 
 uniform vec2 u_resolution;
 uniform float u_time;
+uniform float u_frame;
 
 mat2 rotate2d(float _angle){
     return mat2(cos(_angle),-sin(_angle),
@@ -57,6 +58,7 @@ void main(){
         
     // To move the cross we move the space
     float t = u_time*100.;
+    t = u_frame;
     float a = getNumber(u_tex0,u_tex0Resolution, t, 0.);
     float b = getNumber(u_tex0,u_tex0Resolution, t, 1.);
     float c = getNumber(u_tex0,u_tex0Resolution, t, 2.);

@@ -87,10 +87,13 @@
 			function generateTable() {
 				data = new Data2Image();
 				fps = document.getElementById("fps").value;
-				totalInstances = Math.floor(duration*fps)
-				_data.setValue('ui:currentTime',duration/2)
+				totalInstances = Math.floor(duration*fps);
+
+				if (_data) {
+					_data.setValue('ui:currentTime',duration/2)
+				}
+
 				frames = timeliner.getValues(totalInstances/2,duration/totalInstances);
-				console.log("Ready to generate " + totalInstances + " instances");
 
 				data.setTotalInstances(totalInstances);
 				if (frames) {
@@ -111,10 +114,19 @@
 			            fileDrops: true,
 			    		menu: true
 			    	});
-					glslEditor.open('data/display.frag');
+					glslEditor.open('data/display-fps.frag');
 					glslEditor.open('data/cross.frag','cross.frag');
 				}
 				glslEditor.shader.canvas.loadTexture('u_tex0',data.getUrl(),{filtering: 'nearest'});
+				_data.setValue('ui:currentTime',0);
+				render();
+			}
+
+			function render() {
+				if (_data.data.ui.currentTime) {
+					glslEditor.shader.canvas.uniform('1f', 'float', 'u_frame', _data.data.ui.currentTime*parseFloat(fps));
+				}
+				window.requestAnimationFrame(render);
 			}
 		</script>
 	</body>

@@ -30,14 +30,18 @@ data.addElement('integerx10','number', (instance, element) => {
 data.addElement('integerx100','number', (instance, element) => {
     return instance*100;
 });
-var canvas = data.generate();
+
+// Get the URL of the image
+var url = data.getUrl();
+// or a DOM with the image preloaded
+var img = data.getImg(); 
 ```
 
-This construct a database of rows and columns which values are store as color.
+This construct a database of rows and columns which values are store as color. This colors are store as an image that if you streach looks like this:
 
-<canvas id="shader" data-fragment-url="data/display.frag" width="800" height="600" ></canvas>
+<img src="imgs/00.png" alt="" data-pin-nopin="true" style="width:100%;">
 
-To recover the values on the shader you can use the following code:
+Then the values can be recover inside a GLSL shader using the following code:
 
 ```glsl
 vec2 getCoord(vec2 res, float col, float row) {
@@ -60,7 +64,51 @@ float getNumber(sampler2D tex, vec2 res, float col, float row) {
 }
 ```
 
-Interested on playing with this, use [this editor](editor.html), [this timeline](timeline.html) or [both](timeline-editor.html).
+<img src="imgs/01.gif" alt="" data-pin-nopin="true" style="width:70%;">
+
+```Data2Image()``` also support other data types such as ```color``` and 2D ```positions```. Also it's posible to force a numeric type into ```int```, ```unint```, ```float``` and ```ufloat```.
+
+```js
+...
+data.addElement('unsigned_integer','uint', (instance, element) => {
+    return instance;
+});
+data.addElement('signed_integer','int', (instance, element) => {
+    return instance;
+});
+data.addElement('unsigned_float','ufloat', (instance, element) => {
+    return instance/instances;
+});
+data.addElement('signed_float','float', (instance, element) => {
+    return instance/instances;
+});
+data.addElement('position','position', (instance, element) => {
+    return [Math.sin((instance/instances)*3.1415),Math.cos((instance/instances)*3.1415)];
+});
+data.addElement('red','color', (instance, element) => {
+    return [255,0,0];
+});
+data.addElement('green','color', (instance, element) => {
+    return [0,255,0];
+});
+data.addElement('blue','color', (instance, element) => {
+    return [0,0,255];
+});
+data.addElement('HUE','color', (instance, element) => {
+    return hslToRgb(instance/instances,1,.5);
+});
+...
+```
+
+<a href="http://tangrams.github.io/data2image/display.html"><img src="imgs/02.png" alt="" data-pin-nopin="true" style="width:100%;"></a>
+
+### What's special about this?
+
+Well, this is just a way to pass a big amounts of data to the GPU and use it inside a GLSL Shader. Image all you can do with it. For example you can feed the ```Data2Image()``` with the content of a timeline editor (like [Joshua Koo](https://twitter.com/blurspline)'s [Timeliner](https://github.com/zz85/timeliner)) and edit with presition your animations.
+
+[![](imgs/timeline-editor.gif)](http://tangrams.github.io/data2image/timeline-editor.html)
+
+Interesting right? Try [this editor](http://tangrams.github.io/data2image/editor.html), [this timeline](http://tangrams.github.io/data2image/timeline.html) or [both](http://tangrams.github.io/data2image/timeline-editor.html).
 
 ## Author
 
