@@ -62,13 +62,13 @@ float getNumber(sampler2D tex, vec2 res, float col, float row) {
 
 Interested on playing with this, use [this editor](editor.html), [this timeline](timeline.html) or [both](timeline-editor.html).
 
-### Author
+## Author
 
-Patricio Gonzalez Vivo (Buenos Aires, 1982) is a New York based artist and engineer. He explores interstitial spaces between organic and synthetic, analog and digital, individual and collective.
+**Patricio Gonzalez Vivo** (Buenos Aires, 1982) is a New York based artist and engineer. He explores interstitial spaces between organic and synthetic, analog and digital, individual and collective.
 
 Patricio studied and practiced psychotherapy and expressive art therapy. He holds an MFA in Design & Technology from Parsons The New School, where he now teaches. Currently he works as a Graphic Engineer at Mapzen making open-source mapping tools.
 
-### Thanks to
+## Thanks to
 
 * [Jaume Sanchez Elias](https://www.clicktorelease.com/) for helping me with the premultiply alpha problem
 * [Bei ZHANG](http://twbs.in/) for [rasterjs](https://bitbucket.org/bzhang/rasterjs) used to encode the binary data

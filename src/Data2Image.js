@@ -52,7 +52,7 @@ export default class Data2Image {
 
 	getImg () {
 		let img = document.createElement("IMG");
-		img.setAttribute('src', this.getURL());
+		img.setAttribute('src', this.getUrl());
 		return img;
 	} 
 
