@@ -40,26 +40,35 @@ This construct a database of rows and columns which values are store as color.
 To recover the values on the shader you can use the following code:
 
 ```glsl
-vec2 getCoord(vec2 texture_resolution, float col, float row) {
-    return fract(vec2(col,row+.5)/texture_resolution);
+vec2 getCoord(vec2 res, float col, float row) {
+    vec2 st = fract(vec2(col+.5,row+.5)/res);
+    st.y = 1.0-st.y;
+    return st;
 }
 
-vec3 getElements(sampler2D texture, vec2 coord) {
-    highp vec4 value = texture2D(texture, coord);
-    highp float uint = (value.x*255.)+(value.y*65025.)+(value.z*16581375.);
-    float press = ceil(value.a*255.)-244.;
-    return vec3(uint, abs(press), sign(press));
+vec3 getElements(sampler2D tex, vec2 coord) {
+    vec4 value = texture2D(tex, coord);
+    float uint = dot(value.rgb,vec3(255.,65025.,16581375.));
+    float press = floor(value.a*256.)-244.;
+    return vec3(floor(uint), abs(press), sign(press));
 }
 
-float getNumber(sampler2D texture, vec2 texture_resolution, float col, float row) {
-    vec2 coord = getCoord(texture_resolution, col, row);
-    highp vec3 elements = getElements(texture, coord);
+float getNumber(sampler2D tex, vec2 res, float col, float row) {
+    vec2 coord = getCoord(res, col, row);
+    vec3 elements = getElements(tex, coord);
     return elements.x * pow(10.,-floor(elements.y)) * elements.z;
 }
 ```
 
 Interested on playing with this, use [this editor](editor.html), [this timeline](timeline.html) or [both](timeline-editor.html).
 
-# Credits
+### Author
 
-* It user [rasterjs](https://bitbucket.org/bzhang/rasterjs) by [Bei ZHANG](http://twbs.in/) <ikarienator@gmail.com>
+Patricio Gonzalez Vivo (Buenos Aires, 1982) is a New York based artist and engineer. He explores interstitial spaces between organic and synthetic, analog and digital, individual and collective.
+
+Patricio studied and practiced psychotherapy and expressive art therapy. He holds an MFA in Design & Technology from Parsons The New School, where he now teaches. Currently he works as a Graphic Engineer at Mapzen making open-source mapping tools.
+
+### Thanks to
+
+* [Jaume Sanchez Elias](https://www.clicktorelease.com/) for helping me with the premultiply alpha problem
+* [Bei ZHANG](http://twbs.in/) for [rasterjs](https://bitbucket.org/bzhang/rasterjs) used to encode the binary data
