@@ -59,20 +59,20 @@ void main(){
     // To move the cross we move the space
     float t = u_time*100.;
     t = u_frame;
-    float a = getNumber(u_tex0,u_tex0Resolution, t, 0.);
-    float b = getNumber(u_tex0,u_tex0Resolution, t, 1.);
-    float c = getNumber(u_tex0,u_tex0Resolution, t, 2.);
-    float d = getNumber(u_tex0,u_tex0Resolution, t, 3.);
+    float x = getNumber(u_tex0,u_tex0Resolution, t, 0.);
+    float y = getNumber(u_tex0,u_tex0Resolution, t, 1.);
+    float rotation = getNumber(u_tex0,u_tex0Resolution, t, 2.);
+    float scale = getNumber(u_tex0,u_tex0Resolution, t, 3.);
     
-    vec2 translate = vec2(a,b)*0.005;
+    vec2 translate = vec2(x,y)*0.005;
 
     st += translate;
     
     st -= .5;
-    st = rotate2d(c*0.1) * st;
+    st = rotate2d(rotation*0.1) * st;
     st += .5;
     
-    color += vec3(cross(st,0.1+d*0.01));
+    color += vec3(cross(st,0.1+scale*0.01));
 
     gl_FragColor = vec4(color,1.0);
 }

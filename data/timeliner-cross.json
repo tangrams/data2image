@@ -6,7 +6,7 @@
 	"totalTime": 10,
 	"layers": [
 		{
-			"name": "a",
+			"name": "x",
 			"values": [
 				{
 					"time": 0,
@@ -30,7 +30,7 @@
 			"_color": "#6385c6"
 		},
 		{
-			"name": "b",
+			"name": "y",
 			"values": [
 				{
 					"time": 0,
@@ -54,7 +54,7 @@
 			"_color": "#170be6"
 		},
 		{
-			"name": "c",
+			"name": "rotation",
 			"values": [
 				{
 					"time": 0,
@@ -72,7 +72,7 @@
 			"_color": "#475255"
 		},
 		{
-			"name": "d",
+			"name": "scale",
 			"values": [
 				{
 					"time": 0,
