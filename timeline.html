@@ -94,11 +94,10 @@
 						});
 					}
 				}
-				// document.getElementById("texture").appendChild(data.generate());
 				if (!shader) {
 					shader = new GlslCanvas(document.getElementById("shader"));
 				}
-				shader.loadTexture('u_tex0',data.generate(),{filtering: 'nearest'});
+				shader.loadTexture('u_tex0', data.getUrl(), { filtering: 'nearest' } );
 			}
 		</script>
 	</body>

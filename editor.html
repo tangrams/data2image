@@ -59,7 +59,7 @@
 		    		menu: true
 		    	});
 			glslEditor.open('data/display.frag');
-			glslEditor.shader.canvas.setTextureUniform('u_tex0', data.generate(), { filtering:'nearest' });
+			glslEditor.shader.canvas.setTextureUniform('u_tex0', data.getUrl(), { filtering:'nearest' });
 		</script>
 	</body>
 </html>

@@ -98,7 +98,7 @@
 
 	        function loadShaderEditor() {
 				shader = new GlslCanvas(document.getElementById("shader"));
-				shader.setTextureUniform('u_tex0', window.data.generate(), { filtering:'nearest' });
+				shader.setTextureUniform('u_tex0', window.data.getUrl(), { filtering:'nearest' });
 	        }
 
 	        window.onload = function(){
