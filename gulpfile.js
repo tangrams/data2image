@@ -6,7 +6,7 @@ var plumber = require('gulp-plumber');
 var sourcemaps = require('gulp-sourcemaps');
 
 var paths = {
-    scripts: 'src/**/*.js'
+    scripts: 'js/**/*.js'
 };
 
 // Build Javascripts
@@ -18,7 +18,7 @@ gulp.task('js', function () {
     var buffer = require('vinyl-buffer');
 
     var bundle = browserify({
-        entries: 'src/Data2Image.js',
+        entries: 'js/Data2Image.js',
         debug: true,
         transform: [
             babelify.configure({ optional: ['runtime'] }),
