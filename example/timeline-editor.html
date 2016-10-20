@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Data2Image</title>
-		<script type="text/javascript" src="build/Data2Image.min.js"></script>
+		<script type="text/javascript" src="../build/Data2Image.min.js"></script>
 		<script type="text/javascript" src="https://rawgit.com/zz85/timeliner/master/timeliner.js"></script>
 		<script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/build/GlslCanvas.min.js"></script>
 		<link type="text/css" rel="stylesheet" href="https://rawgit.com/patriciogonzalezvivo/glslEditor/gh-pages/build/glslEditor.css">
@@ -76,7 +76,7 @@
 	        }
 
 			function reloadTimeline () {
-				var file = fetchHTTP('data/timeliner-cross.json');
+				var file = fetchHTTP('timeliner-cross.json');
 				timeliner.load(JSON.parse(file));
 			}
 
@@ -114,8 +114,8 @@
 			            fileDrops: true,
 			    		menu: true
 			    	});
-					glslEditor.open('data/display-fps.frag');
-					glslEditor.open('data/cross.frag','cross.frag');
+					glslEditor.open('display-fps.frag');
+					glslEditor.open('cross.frag','cross.frag');
 				}
 				glslEditor.shader.canvas.loadTexture('u_tex0',data.getUrl(),{filtering: 'nearest'});
 				_data.setValue('ui:currentTime',0);

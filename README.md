@@ -100,15 +100,15 @@ data.addElement('HUE','color', (instance, element) => {
 ...
 ```
 
-<a href="http://tangrams.github.io/data2image/display.html"><img src="imgs/02.png" alt="" data-pin-nopin="true" style="width:100%;"></a>
+<a href="http://tangrams.github.io/data2image/example/display.html"><img src="imgs/02.png" alt="" data-pin-nopin="true" style="width:100%;"></a>
 
 ### What's special about this?
 
 Well, this is just a way to pass a big amounts of data to the GPU and use it inside a GLSL Shader. Image all you can do with it. For example you can feed the ```Data2Image()``` with the content of a timeline editor (like [Joshua Koo](https://twitter.com/blurspline)'s [Timeliner](https://github.com/zz85/timeliner)) and edit with presition your animations.
 
-[![](imgs/timeline-editor.gif)](http://tangrams.github.io/data2image/timeline-editor.html)
+[![](imgs/timeline-editor.gif)](http://tangrams.github.io/data2image/example/timeline-editor.html)
 
-Interesting right? Try [this editor](http://tangrams.github.io/data2image/editor.html), [this timeline](http://tangrams.github.io/data2image/timeline.html) or [both](http://tangrams.github.io/data2image/timeline-editor.html).
+Interesting right? Try [this editor](http://tangrams.github.io/data2image/example/editor.html), [this timeline](http://tangrams.github.io/data2image/timeline.html) or [both](http://tangrams.github.io/data2image/example/timeline-editor.html).
 
 ## Author
 

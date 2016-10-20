@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Data2Image</title>
-		<script type="text/javascript" src="build/Data2Image.min.js"></script>
+		<script type="text/javascript" src="../build/Data2Image.min.js"></script>
 		<script type="text/javascript" src="https://rawgit.com/zz85/timeliner/master/timeliner.js"></script>
 		<script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/build/GlslCanvas.min.js"></script>
 		<style type="text/css">
@@ -41,7 +41,7 @@
 		</ul>
 		<div id='texture'> </div>
 		<div id='container'>
-			<canvas id='shader' data-fragment-url="data/display-fps.frag" width="500" height="500"></canvas>
+			<canvas id='shader' data-fragment-url="display-fps.frag" width="500" height="500"></canvas>
 		</div>
 		<script type="text/javascript">
 			var data;
@@ -69,7 +69,7 @@
 	        }
 
 			function reloadTimeline () {
-				var file = fetchHTTP('data/timeliner-display.json');
+				var file = fetchHTTP('timeliner-display.json');
 				timeliner.load(JSON.parse(file));
 			}
 
